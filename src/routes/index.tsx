@@ -1,24 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CartProvider } from "@/lib/cart";
+import { Loader, Cursor, TopBar, Dock } from "@/components/zova/chrome";
+import { Hero } from "@/components/zova/Hero";
+import { Flavors } from "@/components/zova/Flavors";
+import { Experience, Process } from "@/components/zova/Story";
+import { Gallery, Reviews } from "@/components/zova/Gallery";
+import { Order, CartDrawer } from "@/components/zova/Order";
+import { FindZova, Contact, Footer } from "@/components/zova/Connect";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "ZOVA — Chill. Charged. Sparkling Sodas & Energy Coolers" },
+      { name: "description", content: "ZOVA is a next-gen cold drink: ice-cold sparkling fruit sodas and energy coolers. Explore 5 flavors and order online." },
+      { property: "og:title", content: "ZOVA — Chill. Charged. ZOVA." },
+      { property: "og:description", content: "Ice-cold sparkling fruit sodas and energy coolers. Explore Arctic Mint, Blaze Mango, Neon Berry, Solar Lemon and Cosmic Cola." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <CartProvider>
+      <div className="grain">
+        <Loader />
+        <Cursor />
+        <TopBar />
+        <main>
+          <Hero />
+          <Flavors />
+          <Experience />
+          <Process />
+          <Gallery />
+          <Reviews />
+          <Order />
+          <FindZova />
+          <Contact />
+        </main>
+        <Footer />
+        <Dock />
+        <CartDrawer />
+      </div>
+    </CartProvider>
   );
 }
