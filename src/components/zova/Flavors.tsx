@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export function Flavors() {
   const [i, setI] = useState(0);
-  const f = flavors[i];
+  const f = flavors[i]!;
   const { add } = useCart();
 
   useEffect(() => {

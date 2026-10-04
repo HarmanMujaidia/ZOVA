@@ -73,6 +73,7 @@ export function Reviews() {
     const t = setInterval(() => setI((x) => (x + 1) % reviews.length), 4500);
     return () => clearInterval(t);
   }, []);
+  const rv = reviews[i]!;
   return (
     <section aria-label="Customer reviews" className="py-24">
       <div className="mx-auto max-w-3xl px-6">
@@ -80,13 +81,13 @@ export function Reviews() {
         <div className="relative min-h-64">
           <AnimatePresence mode="wait">
             <motion.figure key={i} initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -60 }} transition={{ duration: 0.5 }} className="glass gradient-border rounded-3xl p-8 text-center sm:p-10">
-              <div className="mb-4 flex justify-center gap-1" aria-label={`${reviews[i].stars} out of 5 stars`}>
-                {Array.from({ length: 5 }).map((_, s) => <Star key={s} className={cn("h-5 w-5", s < reviews[i].stars ? "fill-accent text-accent" : "text-muted")} />)}
+              <div className="mb-4 flex justify-center gap-1" aria-label={`${rv.stars} out of 5 stars`}>
+                {Array.from({ length: 5 }).map((_, s) => <Star key={s} className={cn("h-5 w-5", s < rv.stars ? "fill-accent text-accent" : "text-muted")} />)}
               </div>
-              <blockquote className="text-xl font-medium sm:text-2xl">“{reviews[i].text}”</blockquote>
+              <blockquote className="text-xl font-medium sm:text-2xl">“{rv.text}”</blockquote>
               <figcaption className="mt-6 flex items-center justify-center gap-3">
-                <span className="bg-neon flex h-11 w-11 items-center justify-center rounded-full font-display font-bold text-primary-foreground" aria-hidden>{reviews[i].name[0]}</span>
-                <span className="text-left"><span className="block font-semibold">{reviews[i].name}</span><span className="text-sm text-muted-foreground">{reviews[i].city}</span></span>
+                <span className="bg-neon flex h-11 w-11 items-center justify-center rounded-full font-display font-bold text-primary-foreground" aria-hidden>{rv.name[0]}</span>
+                <span className="text-left"><span className="block font-semibold">{rv.name}</span><span className="text-sm text-muted-foreground">{rv.city}</span></span>
               </figcaption>
             </motion.figure>
           </AnimatePresence>

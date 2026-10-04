@@ -73,7 +73,7 @@ export function Hero() {
         <div className="relative flex justify-center" style={{ perspective: 1000 }}>
           <div aria-hidden className="absolute inset-10 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, var(--flavor), transparent 65%)", opacity: 0.55 }} />
           <motion.img
-            src={flavors[0].can}
+            src={flavors[0]!.can}
             alt="ZOVA Arctic Mint can"
             width={768}
             height={1280}

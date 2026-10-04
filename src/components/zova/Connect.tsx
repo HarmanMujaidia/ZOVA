@@ -78,7 +78,7 @@ export function Contact() {
     setErrors({}); setBusy(true);
     const { error } = await supabase.from("contact_messages").insert(parsed.data);
     setBusy(false);
-    if (error) return toast.error("Message failed to send.");
+    if (error) { toast.error("Message failed to send."); return; }
     toast.success("Message sent — we'll reply soon!");
     form.reset();
   };
@@ -86,9 +86,9 @@ export function Contact() {
   const subscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     const p = emailSchema.safeParse(news);
-    if (!p.success) return toast.error("Enter a valid email");
+    if (!p.success) { toast.error("Enter a valid email"); return; }
     const { error } = await supabase.from("newsletter_subscribers").insert({ email: p.data.toLowerCase() });
-    if (error && error.code !== "23505") return toast.error("Couldn't subscribe.");
+    if (error && error.code !== "23505") { toast.error("Couldn't subscribe."); return; }
     toast.success("You're on the list ⚡");
     setNews("");
   };

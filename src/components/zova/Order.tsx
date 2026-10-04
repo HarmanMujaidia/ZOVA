@@ -36,9 +36,9 @@ export function Order() {
                 <h3 className="text-lg font-bold">{f.name}</h3>
                 <p className="mt-1 font-display text-2xl font-bold" style={{ color: f.color }}>${f.price.toFixed(2)}</p>
                 <div className="mt-4 flex flex-col items-center gap-3">
-                  <Qty value={qty[f.id]} label={f.name} onChange={(n) => setQty((q) => ({ ...q, [f.id]: Math.max(1, Math.min(99, n)) }))} />
+                  <Qty value={qty[f.id] ?? 1} label={f.name} onChange={(n) => setQty((q) => ({ ...q, [f.id]: Math.max(1, Math.min(99, n)) }))} />
                   <button
-                    onClick={() => { add(f.id, qty[f.id]); toast.success(`${qty[f.id]} × ${f.name} added`); }}
+                    onClick={() => { add(f.id, qty[f.id] ?? 1); toast.success(`${qty[f.id]} × ${f.name} added`); }}
                     className="bg-neon rounded-full px-5 py-2 text-sm font-semibold text-primary-foreground"
                   >
                     Add to Cart
