@@ -5,10 +5,17 @@ import canBerry from "@/assets/can-neon-berry.png";
 import canLemon from "@/assets/can-solar-lemon.png";
 import canCola from "@/assets/can-cosmic-cola.png";
 import heroSplash from "@/assets/hero-splash.jpg";
-import gClub from "@/assets/gallery-club.jpg";
-import gBeach from "@/assets/gallery-beach.jpg";
-import gGym from "@/assets/gallery-gym.jpg";
-import gCity from "@/assets/gallery-city.jpg";
+import gMangoAsset from "@/assets/gallery-blaze-mango.png.asset.json";
+import gLemonAsset from "@/assets/gallery-solar-lemon.png.asset.json";
+import gMintAsset from "@/assets/gallery-arctic-mint.png.asset.json";
+import gBerryAsset from "@/assets/gallery-neon-berry.jpg.asset.json";
+import gColaAsset from "@/assets/gallery-cosmic-cola.png.asset.json";
+
+const gMango = gMangoAsset.url;
+const gLemon = gLemonAsset.url;
+const gMint = gMintAsset.url;
+const gBerry = gBerryAsset.url;
+const gCola = gColaAsset.url;
 
 export const media = {
   heroPoster: heroSplash,
@@ -36,10 +43,10 @@ export const flavors: Flavor[] = [
 ];
 
 export const gallery = [
-  { src: gClub, alt: "Friends raising ZOVA cans at a neon nightclub", tall: true },
-  { src: gBeach, alt: "Woman holding a Solar Lemon ZOVA at a sunset beach", tall: false },
+  { src: gMango, alt: "Model holding a Blaze Mango ZOVA can on an orange studio backdrop", tall: true },
+  { src: gLemon, alt: "Hand holding a Solar Lemon ZOVA can against a lime-green splash background", tall: false },
+  { src: gMint, alt: "Arctic Mint ZOVA can floating over icy blue water with a surfer", tall: true },
+  { src: gBerry, alt: "Neon Berry ZOVA can in a magenta fruit splash", tall: false },
+  { src: gCola, alt: "Cosmic Cola ZOVA can coiled by a black dragon in a cosmic red scene", tall: false },
   { src: "video", alt: "Slow-motion splash video", tall: false },
-  { src: gGym, alt: "Athlete drinking Arctic Mint ZOVA at the gym", tall: true },
-  { src: gCity, alt: "Man holding Cosmic Cola ZOVA on a neon city street at night", tall: false },
-  { src: heroSplash, alt: "Ice cubes and liquid splashing under neon light", tall: false },
 ];
