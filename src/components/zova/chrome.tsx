@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Home, Sparkles, BookOpen, Images, ShoppingBag, Mail, Volume2, VolumeX } from "lucide-react";
 import { useCart } from "@/lib/cart";
@@ -16,7 +16,8 @@ export const NAV = [
 
 export function Loader() {
   const [done, setDone] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setDone(true), 1600); return () => clearTimeout(t); }, []);
+  const reducedMotion = useReducedMotion();
+  useEffect(() => { const t = setTimeout(() => setDone(true), reducedMotion ? 0 : 1600); return () => clearTimeout(t); }, [reducedMotion]);
   return (
     <AnimatePresence>
       {!done && (
@@ -61,8 +62,9 @@ export function Cursor() {
   const y = useSpring(useMotionValue(-100), { stiffness: 500, damping: 40 });
   const [grow, setGrow] = useState(false);
   const [enabled, setEnabled] = useState(false);
+  const reducedMotion = useReducedMotion();
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches || reducedMotion) return;
     setEnabled(true);
     const move = (e: MouseEvent) => {
       x.set(e.clientX); y.set(e.clientY);
@@ -71,14 +73,14 @@ export function Cursor() {
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, [x, y]);
+  }, [x, y, reducedMotion]);
   if (!enabled) return null;
   return (
     <motion.div
       aria-hidden
       className="pointer-events-none fixed left-0 top-0 z-[90] rounded-full border border-primary mix-blend-screen"
       style={{ x, y, translateX: "-50%", translateY: "-50%", boxShadow: "0 0 24px var(--flavor)" }}
-      animate={{ width: grow ? 56 : 18, height: grow ? 56 : 18, backgroundColor: grow ? "color-mix(in oklab, var(--flavor) 25%, transparent)" : "transparent" }}
+      animate={{ width: grow ? 56 : 18, height: grow ? 56 : 18 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
     />
   );
