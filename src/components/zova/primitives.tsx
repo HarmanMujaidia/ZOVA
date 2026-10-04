@@ -47,7 +47,7 @@ export function MagneticButton({ children, variant = "neon", className, onClick,
       className={cn(
         "relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50",
         variant === "neon" && "bg-neon text-primary-foreground glow hover:shadow-[0_0_60px_-4px_var(--flavor)]",
-        variant === "glass" && "glass text-foreground hover:bg-white/10",
+        variant === "glass" && "glass text-foreground hover:bg-glass-border",
         className,
       )}
       {...(rest as object)}
