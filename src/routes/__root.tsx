@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "ZOVA — Chill. Charged." },
       { name: "description", content: "ZOVA sparkling fruit sodas and energy coolers." },
-      { name: "theme-color", content: "#FAFAFC" },
+      { name: "theme-color", content: "#05060A" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

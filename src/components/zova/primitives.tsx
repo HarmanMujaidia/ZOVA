@@ -65,7 +65,7 @@ export function Bubbles({ count = 18 }: { count?: number }) {
         return (
           <span
             key={i}
-            className="animate-rise absolute bottom-[-40px] rounded-full border border-foreground/25 bg-foreground/5"
+            className="animate-rise absolute bottom-[-40px] rounded-full border border-white/30 bg-white/5"
             style={{
               left: `${(i * 53) % 100}%`,
               width: size,
