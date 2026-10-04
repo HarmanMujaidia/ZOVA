@@ -40,7 +40,7 @@ export function Gallery() {
                 </div>
               ) : (
                 <button onClick={() => setOpen(i)} className="group block w-full overflow-hidden rounded-3xl" aria-label={`Open image: ${g.alt}`}>
-                  <img src={g.src} alt={g.alt} loading="lazy" className={cn("w-full object-cover transition-transform duration-700 group-hover:scale-110", g.tall ? "aspect-[3/4]" : "aspect-[4/3]")} />
+                  <img src={g.src} alt={g.alt} loading="lazy" className={cn("w-full object-cover transition-transform duration-700 group-hover:scale-110", g.tall ? "aspect-[2/3]" : "aspect-[3/4]")} />
                 </button>
               )}
             </Reveal>
