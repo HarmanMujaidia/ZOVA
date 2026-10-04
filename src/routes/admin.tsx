@@ -17,7 +17,7 @@ export const Route = createFileRoute("/admin")({
   component: Admin,
 });
 
-type Row = Record<string, unknown> & { id: string; created_at: string };
+type Row = { id: string; created_at: string; name?: string; phone?: string; address?: string; items?: { name: string; qty: number }[]; total?: number; email?: string; message?: string };
 
 function Admin() {
   const [session, setSession] = useState<Session | null>(null);
@@ -39,13 +39,13 @@ function Login() {
     const fd = new FormData(e.currentTarget);
     const email = String(fd.get("email")).trim();
     const password = String(fd.get("password"));
-    if (password.length < 8) return toast.error("Password must be at least 8 characters");
+    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
     setBusy(true);
     const { error, data } = mode === "in"
       ? await supabase.auth.signInWithPassword({ email, password })
       : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/admin` } });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (mode === "up" && !data.session) toast.success("Check your email to confirm your account.");
   };
   return (
@@ -76,7 +76,7 @@ function Dashboard({ session }: { session: Session }) {
     if (!isAdmin) return;
     supabase.from(tab).select("*").order("created_at", { ascending: false }).then(({ data, error }) => {
       if (error) toast.error(error.message);
-      setRows((data as Row[]) ?? []);
+      setRows((data as unknown as Row[]) ?? []);
     });
   }, [tab, isAdmin]);
 
@@ -106,7 +106,7 @@ function Dashboard({ session }: { session: Session }) {
                 {tab === "orders" ? (
                   <div className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
                     <div><p className="font-semibold">{String(r.name)}</p><p className="text-sm text-muted-foreground">{String(r.phone)}</p><p className="text-sm text-muted-foreground">{String(r.address)}</p></div>
-                    <ul className="text-sm">{(r.items as { name: string; qty: number }[]).map((i, n) => <li key={n}>{i.qty} × {i.name}</li>)}</ul>
+                    <ul className="text-sm">{(r.items ?? []).map((i, n) => <li key={n}>{i.qty} × {i.name}</li>)}</ul>
                     <p className="font-display text-xl font-bold">${Number(r.total).toFixed(2)}</p>
                   </div>
                 ) : tab === "contact_messages" ? (
