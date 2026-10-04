@@ -166,7 +166,7 @@ export function Dock() {
     let frame = 0;
     const updateActive = () => {
       const marker = window.innerHeight * 0.45;
-      let current = NAV[0].id;
+      let current: string = "home";
       for (const item of NAV) {
         const section = document.getElementById(item.id);
         if (section && section.getBoundingClientRect().top <= marker) current = item.id;
