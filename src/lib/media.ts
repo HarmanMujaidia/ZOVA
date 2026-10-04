@@ -5,6 +5,7 @@ import canBerry from "@/assets/can-neon-berry.png";
 import canLemon from "@/assets/can-solar-lemon.png";
 import canCola from "@/assets/can-cosmic-cola.png";
 import heroSplash from "@/assets/hero-splash.jpg";
+import heroLiquid from "@/assets/hero-liquid.mp4.asset.json";
 import gMangoAsset from "@/assets/gallery-blaze-mango.png.asset.json";
 import gLemonAsset from "@/assets/gallery-solar-lemon.png.asset.json";
 import gMintAsset from "@/assets/gallery-arctic-mint.png.asset.json";
@@ -19,7 +20,7 @@ const gCola = gColaAsset.url;
 
 export const media = {
   heroPoster: heroSplash,
-  heroVideo: "https://assets.mixkit.co/videos/18294/18294-720.mp4",
+  heroVideo: heroLiquid.url,
   experienceVideo: "https://assets.mixkit.co/videos/41552/41552-720.mp4",
   galleryVideo: "https://assets.mixkit.co/videos/4962/4962-720.mp4",
 };

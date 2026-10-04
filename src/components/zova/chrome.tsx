@@ -76,8 +76,8 @@ export function Cursor() {
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[90] rounded-full border border-primary mix-blend-screen"
-      style={{ x, y, translateX: "-50%", translateY: "-50%", boxShadow: "0 0 24px var(--flavor)" }}
+      className="pointer-events-none fixed left-0 top-0 z-[90] rounded-full border border-primary"
+      style={{ x, y, translateX: "-50%", translateY: "-50%", boxShadow: "0 0 18px var(--flavor)" }}
       animate={{ width: grow ? 56 : 18, height: grow ? 56 : 18, backgroundColor: grow ? "color-mix(in oklab, var(--flavor) 25%, transparent)" : "transparent" }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
     />
