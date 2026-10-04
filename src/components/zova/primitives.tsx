@@ -1,16 +1,17 @@
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useRef, type ReactNode, type ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 import { fizz } from "@/lib/sound";
 
 export function Reveal({ children, delay = 0, className, y = 40 }: { children: ReactNode; delay?: number; className?: string; y?: number }) {
+  const reducedMotion = useReducedMotion();
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y, scale: 0.98 }}
+      initial={reducedMotion ? false : { opacity: 0, y, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -37,7 +38,8 @@ export function MagneticButton({ children, variant = "neon", className, onClick,
       ref={ref}
       style={{ x, y }}
       onMouseMove={(e) => {
-        const r = ref.current!.getBoundingClientRect();
+        const r = ref.current?.getBoundingClientRect();
+        if (!r) return;
         x.set((e.clientX - r.left - r.width / 2) * 0.3);
         y.set((e.clientY - r.top - r.height / 2) * 0.3);
       }}

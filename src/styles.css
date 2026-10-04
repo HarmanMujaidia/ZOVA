@@ -69,6 +69,12 @@
 
   /* live flavor color — updated by the flavor selector */
   --flavor: var(--neon-cyan);
+  --section-home: var(--neon-cyan);
+  --section-flavors: var(--neon-lime);
+  --section-story: var(--neon-magenta);
+  --section-gallery: var(--neon-cyan);
+  --section-order: var(--neon-lime);
+  --section-contact: var(--neon-magenta);
 
   --gradient-neon: linear-gradient(110deg, var(--neon-cyan), var(--neon-lime) 50%, var(--neon-magenta));
   --shadow-glow: 0 0 40px -6px color-mix(in oklab, var(--flavor) 70%, transparent);
@@ -147,7 +153,6 @@
     radial-gradient(60% 50% at 50% 40%, color-mix(in oklab, var(--flavor) 35%, transparent), transparent 70%),
     radial-gradient(40% 40% at 85% 80%, color-mix(in oklab, var(--neon-magenta) 18%, transparent), transparent 70%),
     var(--background);
-  transition: background 0.8s ease;
 }
 
 @keyframes rise {

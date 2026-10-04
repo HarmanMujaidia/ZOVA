@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Home, Sparkles, BookOpen, Images, ShoppingBag, Mail, Volume2, VolumeX } from "lucide-react";
 import { useCart } from "@/lib/cart";
@@ -16,7 +16,8 @@ export const NAV = [
 
 export function Loader() {
   const [done, setDone] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setDone(true), 1600); return () => clearTimeout(t); }, []);
+  const reducedMotion = useReducedMotion();
+  useEffect(() => { const t = setTimeout(() => setDone(true), reducedMotion ? 0 : 1600); return () => clearTimeout(t); }, [reducedMotion]);
   return (
     <AnimatePresence>
       {!done && (
@@ -61,24 +62,25 @@ export function Cursor() {
   const y = useSpring(useMotionValue(-100), { stiffness: 500, damping: 40 });
   const [grow, setGrow] = useState(false);
   const [enabled, setEnabled] = useState(false);
+  const reducedMotion = useReducedMotion();
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches || reducedMotion) return;
     setEnabled(true);
     const move = (e: MouseEvent) => {
       x.set(e.clientX); y.set(e.clientY);
-      const t = e.target as HTMLElement;
-      setGrow(!!t.closest("button, a, [data-cursor='grow']"));
+      const t = e.target;
+      setGrow(t instanceof Element && !!t.closest("button, a, [data-cursor='grow']"));
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, [x, y]);
+  }, [x, y, reducedMotion]);
   if (!enabled) return null;
   return (
     <motion.div
       aria-hidden
       className="pointer-events-none fixed left-0 top-0 z-[90] rounded-full border border-primary mix-blend-screen"
       style={{ x, y, translateX: "-50%", translateY: "-50%", boxShadow: "0 0 24px var(--flavor)" }}
-      animate={{ width: grow ? 56 : 18, height: grow ? 56 : 18, backgroundColor: grow ? "color-mix(in oklab, var(--flavor) 25%, transparent)" : "transparent" }}
+      animate={{ width: grow ? 56 : 18, height: grow ? 56 : 18 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
     />
   );
@@ -128,25 +130,26 @@ function DockItem({ item, mouseX, active, onSelect }: { item: (typeof NAV)[numbe
   });
   const scale = useSpring(useTransform(dist, [-140, 0, 140], [1, 1.45, 1]), { stiffness: 260, damping: 18 });
   const Icon = item.icon;
+  const sectionColor = `var(--section-${item.id})`;
   return (
     <motion.button
       ref={ref}
       style={{ scale }}
       onClick={() => { setRipples((r) => [...r, Date.now()]); onSelect(); }}
       aria-label={item.label}
-      aria-current={active ? "true" : undefined}
+       aria-current={active ? "location" : undefined}
       className={cn(
         "relative flex origin-bottom flex-col items-center justify-center overflow-hidden rounded-2xl px-2.5 py-2 transition-colors sm:px-3.5",
         active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
       )}
     >
       {active && (
-        <motion.span layoutId="dock-active" className="absolute inset-0 rounded-2xl" style={{ background: "color-mix(in oklab, var(--flavor) 22%, transparent)", boxShadow: "0 0 24px -4px var(--flavor)" }} />
+         <motion.span layoutId="dock-active" className="absolute inset-0 rounded-2xl bg-glass" style={{ boxShadow: `inset 0 0 0 1px ${sectionColor}, 0 0 24px -4px ${sectionColor}` }} />
       )}
       {ripples.map((r) => (
         <span key={r} onAnimationEnd={() => setRipples((x) => x.filter((y) => y !== r))} className="animate-ripple absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ background: "var(--flavor)" }} />
       ))}
-      <Icon className="relative h-6 w-6 sm:h-5 sm:w-5" style={active ? { color: "var(--flavor)", filter: "drop-shadow(0 0 6px var(--flavor))" } : undefined} />
+       <Icon className="relative h-6 w-6 sm:h-5 sm:w-5" style={active ? { color: sectionColor, filter: `drop-shadow(0 0 6px ${sectionColor})` } : undefined} />
       <span className="relative mt-1 text-[10px] font-medium">{item.label}</span>
     </motion.button>
   );
@@ -160,18 +163,27 @@ export function Dock() {
 
   useEffect(() => {
     let last = window.scrollY;
+    let frame = 0;
+    const updateActive = () => {
+      const marker = window.innerHeight * 0.45;
+      let current: string = "home";
+      for (const item of NAV) {
+        const section = document.getElementById(item.id);
+        if (section && section.getBoundingClientRect().top <= marker) current = item.id;
+      }
+      setActive(current);
+    };
     const onScroll = () => {
       const y = window.scrollY;
       setHidden(y > last && y > 300);
       last = y;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateActive);
     };
+    updateActive();
     window.addEventListener("scroll", onScroll, { passive: true });
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    NAV.forEach((n) => { const el = document.getElementById(n.id); if (el) obs.observe(el); });
-    return () => { window.removeEventListener("scroll", onScroll); obs.disconnect(); };
+    window.addEventListener("resize", updateActive);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", updateActive); cancelAnimationFrame(frame); };
   }, []);
 
   return (

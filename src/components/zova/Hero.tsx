@@ -72,6 +72,7 @@ export function Hero() {
 
         <div className="relative flex justify-center" style={{ perspective: 1000 }}>
           <div aria-hidden className="absolute inset-10 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, var(--flavor), transparent 65%)", opacity: 0.55 }} />
+          <div className="animate-float relative">
           <motion.img
             src={flavors[0]!.can}
             alt="ZOVA Arctic Mint can"
@@ -82,8 +83,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.8, duration: 1 }}
-            className="animate-float relative w-52 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] sm:w-64 md:w-80"
+            className="relative w-52 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] sm:w-64 md:w-80"
           />
+          </div>
         </div>
       </div>
 

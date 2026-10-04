@@ -11,6 +11,8 @@ export const Route = createFileRoute("/admin")({
       { name: "description", content: "ZOVA admin dashboard for orders, messages and newsletter subscribers." },
       { property: "og:title", content: "ZOVA Admin" },
       { property: "og:description", content: "Private ZOVA admin dashboard." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
