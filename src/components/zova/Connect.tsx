@@ -29,7 +29,11 @@ export function FindZova() {
           <Reveal>
             <div className="glass relative aspect-[16/9] overflow-hidden rounded-3xl" role="img" aria-label="Map of ZOVA store locations">
               <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(var(--glass-border) 1px, transparent 1px), linear-gradient(90deg, var(--glass-border) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-              <WorldMap markers={results.map((s) => ({ id: s.name, lat: s.lat, lng: s.lng }))} />
+              <WorldMap
+                markers={results.map((s) => ({ id: s.name, lat: s.lat, lng: s.lng }))}
+                activeId={q.trim() ? results[0]?.name : stores[0].name}
+              />
+              <div aria-hidden className="pointer-events-none absolute inset-0 rounded-3xl" style={{ boxShadow: "inset 0 0 60px 10px color-mix(in oklab, var(--background) 55%, transparent)" }} />
 
             </div>
           </Reveal>
