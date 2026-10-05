@@ -83,7 +83,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.8, duration: 1 }}
-            className="relative w-52 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] sm:w-64 md:w-80"
+            className="relative w-44 drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] sm:w-64 md:w-80"
           />
           </div>
         </div>
