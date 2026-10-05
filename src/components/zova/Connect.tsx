@@ -95,15 +95,15 @@ export function Contact() {
 
   return (
     <section id="contact" className="py-28" aria-label="Contact">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-2">
-        <div>
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-10 px-6 lg:grid-cols-2">
+        <div className="min-w-0">
           <SectionTitle eyebrow="Contact" title={<>Let's <span className="text-neon">connect</span></>} />
           <Reveal className="glass gradient-border rounded-3xl p-8">
             <h3 className="text-2xl font-bold">Join the charge</h3>
             <p className="mt-2 text-muted-foreground">Drops, new flavors and secret launches. No spam, ever.</p>
             <form onSubmit={subscribe} className="mt-6 flex gap-2">
               <label className="sr-only" htmlFor="news">Email</label>
-              <input id="news" type="email" value={news} onChange={(e) => setNews(e.target.value)} maxLength={255} placeholder="you@email.com" className="glass flex-1 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-ring" />
+              <input id="news" type="email" value={news} onChange={(e) => setNews(e.target.value)} maxLength={255} placeholder="you@email.com" className="glass min-w-0 flex-1 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-ring" />
               <button className="bg-neon rounded-full px-5 font-semibold text-primary-foreground" aria-label="Subscribe"><Send className="h-4 w-4" /></button>
             </form>
             <div className="mt-8 flex gap-3">
