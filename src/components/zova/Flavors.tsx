@@ -2,7 +2,7 @@ import { AnimatePresence, motion, type MotionStyle } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { flavors } from "@/lib/media";
+import { flavors, imageFallback } from "@/lib/media";
 import { useCart } from "@/lib/cart";
 import { MagneticButton, SectionTitle } from "./primitives";
 import { cn } from "@/lib/utils";
@@ -55,6 +55,7 @@ export function Flavors() {
               <motion.img
                 key={f.id}
                 src={f.can}
+                 onError={imageFallback}
                 alt={`ZOVA ${f.name} can`}
                 width={768}
                 height={1280}

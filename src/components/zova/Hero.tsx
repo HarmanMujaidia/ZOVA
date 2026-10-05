@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { media, flavors } from "@/lib/media";
+import { media, flavors, imageFallback } from "@/lib/media";
 import { Bubbles, MagneticButton } from "./primitives";
 import { scrollToId } from "./chrome";
 
@@ -33,7 +33,7 @@ export function Hero() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           aria-hidden
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
@@ -75,6 +75,7 @@ export function Hero() {
           <div className="animate-float relative">
           <motion.img
             src={flavors[0]!.can}
+            onError={imageFallback}
             alt="ZOVA Arctic Mint can"
             width={768}
             height={1280}
