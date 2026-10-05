@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type MotionStyle } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -26,7 +26,7 @@ export function Flavors() {
   return (
     <section id="flavors" className="relative overflow-hidden bg-background py-28" aria-label="Flavors">
       <AnimatePresence initial={false}>
-        <motion.div key={f.id} aria-hidden className="flavor-bg pointer-events-none absolute inset-0" style={{ "--flavor": f.color } as React.CSSProperties & { "--flavor": string }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} />
+        <motion.div key={f.id} aria-hidden className="flavor-bg pointer-events-none absolute inset-0" style={{ "--flavor": f.color } as MotionStyle} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} />
       </AnimatePresence>
       <div className="relative mx-auto max-w-7xl px-6">
         <SectionTitle eyebrow="The lineup" title={<>Pick your <span className="text-neon">charge</span></>} sub="Five flavors. Zero compromise. Tap one to feel the shift." />
