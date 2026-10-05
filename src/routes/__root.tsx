@@ -1,4 +1,3 @@
-import { Preloader } from "../components/Preloader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -13,8 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-const SITE = "https://zovadrnk.vercel.app";
-const OG_IMAGE = `${SITE}/og-image.png`;
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -87,14 +85,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "ZOVA" },
       { property: "og:title", content: "ZOVA — Chill. Charged." },
       { property: "og:description", content: "Ice-cold sparkling fruit sodas and energy coolers." },
-      { property: "og:url", content: SITE },
-      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: "https://zovadrink.vercel.app" },
+      { property: "og:image", content: "https://zovadrink.vercel.app/og-image.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "ZOVA — Chill. Charged." },
       { name: "twitter:description", content: "Ice-cold sparkling fruit sodas and energy coolers." },
-      { name: "twitter:image", content: OG_IMAGE },
+      { name: "twitter:image", content: "https://zovadrink.vercel.app/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -105,7 +103,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
-  })
+  
+
+  shellComponent: RootShell,
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
+});
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -127,11 +131,6 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Preloader />    <QueryClientProvider client={queryClient}>
-      <Preloader />
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
       <Outlet />
     </QueryClientProvider>
   );
