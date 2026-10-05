@@ -1,28 +1,28 @@
-// Central media registry — swap any of these for your own files in src/assets.
-import canMint from "@/assets/can-arctic-mint.png";
-import canMango from "@/assets/can-blaze-mango.png";
-import canBerry from "@/assets/can-neon-berry.png";
-import canLemon from "@/assets/can-solar-lemon.png";
-import canCola from "@/assets/can-cosmic-cola.png";
+// Local, case-consistent media imports are bundled with the site.
+import canMint from "@/assets/can-arctic-mint.webp";
+import canMango from "@/assets/can-blaze-mango.webp";
+import canBerry from "@/assets/can-neon-berry.webp";
+import canLemon from "@/assets/can-solar-lemon.webp";
+import canCola from "@/assets/can-cosmic-cola.webp";
 import heroSplash from "@/assets/hero-splash.jpg";
-import gMangoAsset from "@/assets/gallery-blaze-mango.png.asset.json";
-import gLemonAsset from "@/assets/gallery-solar-lemon.png.asset.json";
-import gMintAsset from "@/assets/gallery-arctic-mint.png.asset.json";
-import gBerryAsset from "@/assets/gallery-neon-berry.jpg.asset.json";
-import gColaAsset from "@/assets/gallery-cosmic-cola.png.asset.json";
-
-const gMango = gMangoAsset.url;
-const gLemon = gLemonAsset.url;
-const gMint = gMintAsset.url;
-const gBerry = gBerryAsset.url;
-const gCola = gColaAsset.url;
+import gMango from "@/assets/gallery-blaze-mango.webp";
+import gLemon from "@/assets/gallery-solar-lemon.webp";
+import gMint from "@/assets/gallery-arctic-mint.webp";
+import gBerry from "@/assets/gallery-neon-berry.webp";
+import gCola from "@/assets/gallery-cosmic-cola.webp";
 
 export const media = {
   heroPoster: heroSplash,
-  heroVideo: "https://assets.mixkit.co/videos/18294/18294-720.mp4",
-  experienceVideo: "https://assets.mixkit.co/videos/41552/41552-720.mp4",
-  galleryVideo: "https://assets.mixkit.co/videos/4962/4962-720.mp4",
+  heroVideo: "/media/hero.mp4",
+  experienceVideo: "/media/experience.mp4",
+  galleryVideo: "/media/gallery.mp4",
+  imageFallback: "/media/zova-placeholder.svg",
 };
+
+export function imageFallback(event: { currentTarget: HTMLImageElement }) {
+  const image = event.currentTarget;
+  if (!image.src.endsWith(media.imageFallback)) image.src = media.imageFallback;
+}
 
 export type Flavor = {
   id: string;

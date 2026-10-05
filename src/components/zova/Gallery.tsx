@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { X, Star, Play } from "lucide-react";
-import { gallery, media } from "@/lib/media";
+import { gallery, media, imageFallback } from "@/lib/media";
 import { Reveal, SectionTitle } from "./primitives";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,7 @@ export function Gallery() {
                 </div>
               ) : (
                 <button onClick={() => setOpen(i)} className="group block w-full overflow-hidden rounded-3xl" aria-label={`Open image: ${g.alt}`}>
-                  <img src={g.src} alt={g.alt} loading="lazy" className={cn("w-full object-cover transition-transform duration-700 group-hover:scale-110", g.tall ? "aspect-[2/3]" : "aspect-[3/4]")} />
+                  <img src={g.src} alt={g.alt} onError={imageFallback} loading="lazy" className={cn("w-full object-cover transition-transform duration-700 group-hover:scale-110", g.tall ? "aspect-[2/3]" : "aspect-[3/4]")} />
                 </button>
               )}
             </Reveal>
@@ -50,7 +50,7 @@ export function Gallery() {
       <AnimatePresence>
         {item && (
           <motion.div role="dialog" aria-modal="true" aria-label={item.alt} className="fixed inset-0 z-[80] flex items-center justify-center bg-background/90 p-4 backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(null)}>
-            <motion.img src={item.src} alt={item.alt} initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-h-[85vh] max-w-full rounded-3xl" />
+            <motion.img src={item.src} alt={item.alt} onError={imageFallback} initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-h-[85vh] max-w-full rounded-3xl" />
             <button onClick={() => setOpen(null)} className="glass absolute right-6 top-6 rounded-full p-3" aria-label="Close"><X className="h-5 w-5" /></button>
           </motion.div>
         )}

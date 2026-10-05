@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Minus, Plus, Trash2, X, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { flavors } from "@/lib/media";
+import { flavors, imageFallback } from "@/lib/media";
 import { useCart } from "@/lib/cart";
 import { supabase } from "@/integrations/supabase/client";
 import { MagneticButton, Reveal, SectionTitle } from "./primitives";
@@ -31,7 +31,7 @@ export function Order() {
               <article className="glass group flex h-full flex-col items-center rounded-3xl p-6 text-center transition-shadow hover:shadow-[0_0_50px_-12px_var(--c)]" style={{ ["--c" as string]: f.color }}>
                 <div className="relative mb-4 flex h-48 items-center justify-center">
                   <div aria-hidden className="absolute h-32 w-32 rounded-full blur-2xl" style={{ background: f.color, opacity: 0.4 }} />
-                  <img src={f.can} alt={`ZOVA ${f.name}`} loading="lazy" width={768} height={1280} className="relative h-48 w-auto transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
+                  <img src={f.can} alt={`ZOVA ${f.name} can`} onError={imageFallback} loading="lazy" width={768} height={1280} className="relative h-48 w-auto transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
                 </div>
                 <h3 className="text-lg font-bold">{f.name}</h3>
                 <p className="mt-1 font-display text-2xl font-bold" style={{ color: f.color }}>${f.price.toFixed(2)}</p>
@@ -116,7 +116,7 @@ export function CartDrawer() {
                 <ul className="flex-1 space-y-4 overflow-y-auto">
                   {lines.map((l) => (
                     <li key={l.id} className="glass flex items-center gap-4 rounded-2xl p-3">
-                      <img src={l.flavor.can} alt="" className="h-16 w-auto" />
+                      <img src={l.flavor.can} alt={`ZOVA ${l.flavor.name} can`} onError={imageFallback} className="h-16 w-auto" />
                       <div className="flex-1">
                         <p className="font-semibold">{l.flavor.name}</p>
                         <p className="text-sm text-muted-foreground">${(l.flavor.price * l.qty).toFixed(2)}</p>
