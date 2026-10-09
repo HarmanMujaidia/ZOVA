@@ -7,6 +7,7 @@ import { Experience, Process } from "@/components/zova/Story";
 import { Gallery, Reviews } from "@/components/zova/Gallery";
 import { Order, CartDrawer } from "@/components/zova/Order";
 import { FindZova, Contact, Footer } from "@/components/zova/Connect";
+import { flavors, media } from "@/lib/media";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +24,12 @@ export const Route = createFileRoute("/")({
       { name: "twitter:description", content: "Premium sparkling fruit sodas and energy coolers in five bold, ice-cold flavors." },
       { name: "twitter:image", content: "https://zovadrink.vercel.app/media/zova-share.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://zovadrink.vercel.app/" }],
+    links: [
+      { rel: "canonical", href: "https://zovadrink.vercel.app/" },
+      { rel: "preload", href: media.heroPoster, as: "image", fetchPriority: "high" },
+      ...flavors.map((flavor) => ({ rel: "preload", href: flavor.can, as: "image" as const })),
+      { rel: "preload", href: media.heroVideo, as: "video", type: "video/mp4" },
+    ],
   }),
   component: Index,
 });

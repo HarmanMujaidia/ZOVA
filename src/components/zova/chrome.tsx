@@ -34,7 +34,7 @@ export function Loader() {
       if (finished < assets.length || released) return;
       released = true;
       const remaining = Math.max(0, 1500 - (Date.now() - started));
-      window.setTimeout(() => setDone(true), reducedMotion ? 0 : remaining);
+      window.setTimeout(() => setDone(true), remaining);
     };
     const cleanups = assets.map((asset) => {
       if (asset.type === "image") {
