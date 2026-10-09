@@ -73,7 +73,7 @@ export function Loader() {
         >
           <div className="relative">
             <motion.h1
-              initial={{ opacity: 0, letterSpacing: "0.6em" }}
+              initial={{ opacity: 1, letterSpacing: "0.45em" }}
               animate={{ opacity: 1, letterSpacing: "0.15em" }}
               transition={{ duration: 1.1, ease: "easeOut" }}
               className="text-neon text-6xl font-black sm:text-8xl"
