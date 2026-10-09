@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
       { rel: "canonical", href: "https://zovadrink.vercel.app/" },
       { rel: "preload", href: media.heroPoster, as: "image", fetchPriority: "high" },
       ...flavors.map((flavor) => ({ rel: "preload", href: flavor.can, as: "image" as const })),
-      { rel: "preload", href: media.heroVideo, as: "video", type: "video/mp4" },
+      { rel: "preload", href: media.heroVideo, as: "video", type: "video/webm" },
     ],
   }),
   component: Index,
