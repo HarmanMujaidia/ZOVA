@@ -4,6 +4,7 @@ import { Home, Sparkles, BookOpen, Images, ShoppingBag, Mail, Volume2, VolumeX }
 import { useCart } from "@/lib/cart";
 import { fizz, setSound } from "@/lib/sound";
 import { cn } from "@/lib/utils";
+import { flavors, media } from "@/lib/media";
 
 export const NAV = [
   { id: "home", label: "Home", icon: Home },
@@ -16,8 +17,51 @@ export const NAV = [
 
 export function Loader() {
   const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(0);
   const reducedMotion = useReducedMotion();
-  useEffect(() => { const t = setTimeout(() => setDone(true), reducedMotion ? 0 : 1600); return () => clearTimeout(t); }, [reducedMotion]);
+  useEffect(() => {
+    const started = Date.now();
+    let finished = 0;
+    let released = false;
+    const assets: Array<{ src: string; type: "image" | "video" }> = [
+      { src: media.heroPoster, type: "image" },
+      ...flavors.map((flavor) => ({ src: flavor.can, type: "image" as const })),
+      { src: media.heroVideo, type: "video" },
+    ];
+    const finishOne = () => {
+      finished += 1;
+      setProgress(Math.round((finished / assets.length) * 100));
+      if (finished < assets.length || released) return;
+      released = true;
+      const remaining = Math.max(0, 1500 - (Date.now() - started));
+      window.setTimeout(() => setDone(true), reducedMotion ? 0 : remaining);
+    };
+    const cleanups = assets.map((asset) => {
+      if (asset.type === "image") {
+        const image = new Image();
+        let settled = false;
+        const settle = () => { if (!settled) { settled = true; finishOne(); } };
+        image.onload = settle;
+        image.onerror = settle;
+        image.src = asset.src;
+        if (image.complete) settle();
+        return () => { image.onload = null; image.onerror = null; };
+      }
+      const video = document.createElement("video");
+      let settled = false;
+      const settle = () => { if (!settled) { settled = true; finishOne(); } };
+      video.preload = "auto";
+      video.oncanplaythrough = settle;
+      video.onerror = settle;
+      video.src = asset.src;
+      video.load();
+      return () => { video.oncanplaythrough = null; video.onerror = null; video.removeAttribute("src"); video.load(); };
+    });
+    const maximum = window.setTimeout(() => {
+      if (!released) { released = true; setProgress(100); setDone(true); }
+    }, 6000);
+    return () => { cleanups.forEach((cleanup) => cleanup()); window.clearTimeout(maximum); };
+  }, [reducedMotion]);
   return (
     <AnimatePresence>
       {!done && (
@@ -48,9 +92,10 @@ export function Loader() {
               />
             ))}
           </div>
-          <div className="mt-8 h-0.5 w-40 overflow-hidden rounded-full bg-muted">
-            <motion.div className="bg-neon h-full" initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.4 }} />
+          <div className="mt-8 h-0.5 w-48 overflow-hidden rounded-full bg-muted">
+            <motion.div className="bg-neon h-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.2 }} />
           </div>
+          <p className="mt-4 font-display text-sm tabular-nums text-muted-foreground">{progress}%</p>
         </motion.div>
       )}
     </AnimatePresence>

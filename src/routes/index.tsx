@@ -11,13 +11,19 @@ import { FindZova, Contact, Footer } from "@/components/zova/Connect";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ZOVA — Chill. Charged. Sparkling Sodas & Energy Coolers" },
-      { name: "description", content: "ZOVA is a next-gen cold drink: ice-cold sparkling fruit sodas and energy coolers. Explore 5 flavors and order online." },
-      { property: "og:title", content: "ZOVA — Chill. Charged. ZOVA." },
-      { property: "og:description", content: "Ice-cold sparkling fruit sodas and energy coolers. Explore Arctic Mint, Blaze Mango, Neon Berry, Solar Lemon and Cosmic Cola." },
+      { title: "ZOVA – Chill. Charged." },
+      { name: "description", content: "Discover ZOVA premium sparkling fruit sodas and energy coolers—five bold flavors, real-fruit refreshment, and an ice-cold charge." },
+      { property: "og:title", content: "ZOVA – Chill. Charged." },
+      { property: "og:description", content: "Premium sparkling fruit sodas and energy coolers in five bold, ice-cold flavors." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://zovadrink.vercel.app/" },
+      { property: "og:image", content: "https://zovadrink.vercel.app/media/zova-share.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "ZOVA – Chill. Charged." },
+      { name: "twitter:description", content: "Premium sparkling fruit sodas and energy coolers in five bold, ice-cold flavors." },
+      { name: "twitter:image", content: "https://zovadrink.vercel.app/media/zova-share.jpg" },
     ],
+    links: [{ rel: "canonical", href: "https://zovadrink.vercel.app/" }],
   }),
   component: Index,
 });
