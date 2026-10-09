@@ -13,9 +13,9 @@ import gCola from "@/assets/gallery-cosmic-cola.webp";
 
 export const media = {
   heroPoster: heroSplash,
-  heroVideo: "/media/hero.mp4",
-  experienceVideo: "/media/experience.mp4",
-  galleryVideo: "/media/gallery.mp4",
+  heroVideo: "/media/hero.webm",
+  experienceVideo: "/media/experience.webm",
+  galleryVideo: "/media/gallery.webm",
   imageFallback: "/media/zova-placeholder.svg",
 };
 

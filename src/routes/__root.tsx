@@ -74,25 +74,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-    head: () => ({
+  head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ZOVA — Chill. Charged." },
-      { name: "description", content: "Ice-cold sparkling fruit sodas and energy coolers. Explore Arctic Mint, Blaze Mango, Neon Berry, Solar Lemon and Cosmic Cola." },
+      { title: "ZOVA – Chill. Charged." },
+      { name: "description", content: "Discover ZOVA premium sparkling fruit sodas and energy coolers in five bold, ice-cold flavors." },
       { name: "theme-color", content: "#05060A" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "ZOVA" },
-      { property: "og:title", content: "ZOVA — Chill. Charged." },
-      { property: "og:description", content: "Ice-cold sparkling fruit sodas and energy coolers." },
-      { property: "og:url", content: "https://zovadrink.vercel.app" },
-      { property: "og:image", content: "https://zovadrink.vercel.app/og-image.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "ZOVA — Chill. Charged." },
-      { name: "twitter:description", content: "Ice-cold sparkling fruit sodas and energy coolers." },
-      { name: "twitter:image", content: "https://zovadrink.vercel.app/og-image.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -100,11 +90,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
-  
-
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

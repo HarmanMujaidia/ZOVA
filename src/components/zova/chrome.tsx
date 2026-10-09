@@ -4,6 +4,7 @@ import { Home, Sparkles, BookOpen, Images, ShoppingBag, Mail, Volume2, VolumeX }
 import { useCart } from "@/lib/cart";
 import { fizz, setSound } from "@/lib/sound";
 import { cn } from "@/lib/utils";
+import { flavors, media } from "@/lib/media";
 
 export const NAV = [
   { id: "home", label: "Home", icon: Home },
@@ -16,8 +17,50 @@ export const NAV = [
 
 export function Loader() {
   const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(0);
   const reducedMotion = useReducedMotion();
-  useEffect(() => { const t = setTimeout(() => setDone(true), reducedMotion ? 0 : 1600); return () => clearTimeout(t); }, [reducedMotion]);
+  useEffect(() => {
+    const started = Date.now();
+    let finished = 0;
+    let released = false;
+    const assets: Array<{ src: string; type: "image" | "video" }> = [
+      { src: media.heroPoster, type: "image" },
+      ...flavors.map((flavor) => ({ src: flavor.can, type: "image" as const })),
+      { src: media.heroVideo, type: "video" },
+    ];
+    const finishOne = () => {
+      finished += 1;
+      setProgress(Math.round((finished / assets.length) * 100));
+      if (finished < assets.length || released) return;
+      released = true;
+      const remaining = Math.max(0, 1500 - (Date.now() - started));
+      window.setTimeout(() => setDone(true), remaining);
+    };
+    let active = true;
+    const cleanups = assets.map((asset) => {
+      if (asset.type === "image") {
+        const image = new Image();
+        let settled = false;
+        const settle = () => { if (!settled && active) { settled = true; finishOne(); } };
+        image.onload = settle;
+        image.onerror = settle;
+        image.src = asset.src;
+        if (image.complete) settle();
+        return () => { image.onload = null; image.onerror = null; };
+      }
+      let settled = false;
+      const settle = () => { if (!settled && active) { settled = true; finishOne(); } };
+      fetch(asset.src).then((response) => {
+        if (!response.ok) throw new Error("Video preload failed");
+        return response.blob();
+      }).then(settle).catch(settle);
+      return () => { settled = true; };
+    });
+    const maximum = window.setTimeout(() => {
+      if (!released) { released = true; setProgress(100); setDone(true); }
+    }, 5350);
+    return () => { active = false; cleanups.forEach((cleanup) => cleanup()); window.clearTimeout(maximum); };
+  }, [reducedMotion]);
   return (
     <AnimatePresence>
       {!done && (
@@ -30,7 +73,7 @@ export function Loader() {
         >
           <div className="relative">
             <motion.h1
-              initial={{ opacity: 0, letterSpacing: "0.6em" }}
+              initial={{ opacity: 1, letterSpacing: "0.45em" }}
               animate={{ opacity: 1, letterSpacing: "0.15em" }}
               transition={{ duration: 1.1, ease: "easeOut" }}
               className="text-neon text-6xl font-black sm:text-8xl"
@@ -48,9 +91,10 @@ export function Loader() {
               />
             ))}
           </div>
-          <div className="mt-8 h-0.5 w-40 overflow-hidden rounded-full bg-muted">
-            <motion.div className="bg-neon h-full" initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.4 }} />
+          <div className="mt-8 h-0.5 w-48 overflow-hidden rounded-full bg-muted">
+            <motion.div className="bg-neon h-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.2 }} />
           </div>
+          <p className="mt-4 font-display text-sm tabular-nums text-muted-foreground">{progress}%</p>
         </motion.div>
       )}
     </AnimatePresence>
