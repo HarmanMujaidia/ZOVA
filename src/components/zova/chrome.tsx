@@ -36,31 +36,30 @@ export function Loader() {
       const remaining = Math.max(0, 1500 - (Date.now() - started));
       window.setTimeout(() => setDone(true), remaining);
     };
+    let active = true;
     const cleanups = assets.map((asset) => {
       if (asset.type === "image") {
         const image = new Image();
         let settled = false;
-        const settle = () => { if (!settled) { settled = true; finishOne(); } };
+        const settle = () => { if (!settled && active) { settled = true; finishOne(); } };
         image.onload = settle;
         image.onerror = settle;
         image.src = asset.src;
         if (image.complete) settle();
         return () => { image.onload = null; image.onerror = null; };
       }
-      const video = document.createElement("video");
       let settled = false;
-      const settle = () => { if (!settled) { settled = true; finishOne(); } };
-      video.preload = "auto";
-      video.oncanplaythrough = settle;
-      video.onerror = settle;
-      video.src = asset.src;
-      video.load();
-      return () => { video.oncanplaythrough = null; video.onerror = null; video.removeAttribute("src"); video.load(); };
+      const settle = () => { if (!settled && active) { settled = true; finishOne(); } };
+      fetch(asset.src).then((response) => {
+        if (!response.ok) throw new Error("Video preload failed");
+        return response.blob();
+      }).then(settle).catch(settle);
+      return () => { settled = true; };
     });
     const maximum = window.setTimeout(() => {
       if (!released) { released = true; setProgress(100); setDone(true); }
-    }, 6000);
-    return () => { cleanups.forEach((cleanup) => cleanup()); window.clearTimeout(maximum); };
+    }, 5350);
+    return () => { active = false; cleanups.forEach((cleanup) => cleanup()); window.clearTimeout(maximum); };
   }, [reducedMotion]);
   return (
     <AnimatePresence>
