@@ -5,17 +5,16 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { MagneticButton, Reveal, SectionTitle } from "./primitives";
 import { scrollToId, NAV } from "./chrome";
-import { WorldMap } from "./WorldMap";
 
 const stores = [
-  { city: "Mumbai", name: "ZOVA Lab — Bandra West", lat: 19.08, lng: 72.88 },
-  { city: "Delhi", name: "Select Citywalk, Saket", lat: 28.61, lng: 77.21 },
-  { city: "Dubai", name: "Dubai Mall, Level 2", lat: 25.2, lng: 55.27 },
-  { city: "Berlin", name: "KaDeWe Food Hall", lat: 52.52, lng: 13.4 },
-  { city: "London", name: "Selfridges, Oxford St", lat: 51.51, lng: -0.13 },
-  { city: "New York", name: "Chelsea Market", lat: 40.71, lng: -74.0 },
-  { city: "Los Angeles", name: "The Grove", lat: 34.05, lng: -118.24 },
-  { city: "Tokyo", name: "Shibuya Scramble Square", lat: 35.68, lng: 139.69 },
+  { city: "Mumbai", name: "ZOVA Lab — Bandra West", x: 62, y: 52 },
+  { city: "Delhi", name: "Select Citywalk, Saket", x: 60, y: 40 },
+  { city: "Dubai", name: "Dubai Mall, Level 2", x: 55, y: 46 },
+  { city: "Berlin", name: "KaDeWe Food Hall", x: 49, y: 28 },
+  { city: "London", name: "Selfridges, Oxford St", x: 46, y: 27 },
+  { city: "New York", name: "Chelsea Market", x: 26, y: 34 },
+  { city: "Los Angeles", name: "The Grove", x: 15, y: 38 },
+  { city: "Tokyo", name: "Shibuya Scramble Square", x: 84, y: 37 },
 ];
 
 export function FindZova() {
@@ -29,12 +28,12 @@ export function FindZova() {
           <Reveal>
             <div className="glass relative aspect-[16/9] overflow-hidden rounded-3xl" role="img" aria-label="Map of ZOVA store locations">
               <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "linear-gradient(var(--glass-border) 1px, transparent 1px), linear-gradient(90deg, var(--glass-border) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-              <WorldMap
-                markers={results.map((s) => ({ id: s.name, lat: s.lat, lng: s.lng }))}
-                activeId={q.trim() ? results[0]?.name : stores[0].name}
-              />
-              <div aria-hidden className="pointer-events-none absolute inset-0 rounded-3xl" style={{ boxShadow: "inset 0 0 60px 10px color-mix(in oklab, var(--background) 55%, transparent)" }} />
-
+              {results.map((s) => (
+                <span key={s.name} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${s.x}%`, top: `${s.y}%` }}>
+                  <span className="absolute inset-0 animate-ping rounded-full" style={{ background: "var(--flavor)" }} />
+                  <span className="relative block h-3 w-3 rounded-full" style={{ background: "var(--flavor)", boxShadow: "0 0 16px var(--flavor)" }} />
+                </span>
+              ))}
             </div>
           </Reveal>
           <Reveal delay={0.1}>
